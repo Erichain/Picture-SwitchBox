@@ -13,9 +13,9 @@
  */
 (function ( $ ) {
 
-    $.fn.imgSlide = function ( options ) {
+    $.fn.imgSwitch = function ( options ) {
 
-        $(this).attr('id', 'img-slidebox');
+        $(this).attr('id', 'img-switch');
 
         var config = $.extend({
                 speed: 3000,
@@ -29,7 +29,7 @@
                 ]
             }, options),
             imgCount = config.imgs.length,
-            slidebox = document.getElementById('img-slidebox').getElementsByTagName('a'),
+            slidebox = $('#img-switch a'),
 
             util = {
                 addEventWatcher: function ( elem, event, callback ) {}
@@ -45,42 +45,53 @@
                 i;
 
             for ( i = 0; i < imgCount; i++ ) {
-                imgElem[i] = document.createElement('img');
-                imgElem[i].src = config.imgs[i];
-                slidebox[i].appendChild(imgElem[i]);
+                imgElem[i] = $('<img src="" alt="" />');
+                imgElem[i].attr('src', config.imgs[i]);
+                imgElem[i].attr('index', i);
+                slidebox.eq(i).append(imgElem[i]);
             }
         }
 
+        function switchImage ( elem ) {
+            elem.removeClass('active').next().addClass('active');
+        }
+
         function switchImageWithFadeEffect () {
-            var imgsLiElem = document.getElementById('img-slidebox').getElementsByTagName('li'),
+            var activedElem = $('#img-switch li.active'),
+                imgsLis = $('#img-switch li'),
                 timer = null,
                 i = 0;
 
-            timer = setTimeout(switchImage, 1000);
+            switchImage(activedElem);
+            //timer = setTimeout(switchImageWithFadeEffect, config.speed);
         }
 
         function switchImageWithSlideEffect () {}
 
         function switchImageWithPileEffect () {}
 
-        createImageElement();
+        function getSwitchMethod () {
+            switch (config.method) {
+                case 'fade':
+                    console.log('fade');
+                    switchImageWithFadeEffect();
+                    break;
 
-        switch (config.method) {
-            case 'fade':
-                switchImageWithFadeEffect();
-                break;
+                case 'slide':
+                    switchImageWithSlideEffect();
+                    break;
 
-            case 'slide':
-                switchImageWithSlideEffect();
-                break;
+                case 'pile':
+                    switchImageWithPileEffect();
+                    break;
 
-            case 'pile':
-                switchImageWithPileEffect();
-                break;
-
-            default:
-                switchImageWithFadeEffect();
+                default:
+                    switchImageWithFadeEffect();
+            }
         }
+
+        createImageElement();
+        setTimeout(getSwitchMethod, config.speed);
     }
 
 })( jQuery );
