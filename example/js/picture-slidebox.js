@@ -13,26 +13,30 @@
  */
 (function ( $ ) {
 
-    $.fn.imgSwitch = function ( options ) {
-
-        $(this).attr('id', 'img-switch');
-
+    $.fn.switchBox = function ( options ) {
         var config = $.extend({
                 speed: 3000,
                 method: 'fade',
                 isLoop: true,
                 autoBegin: true,
-                imgs: [
-                    'images/img1.jpg',
-                    'images/img2.jpg',
-                    'images/img3.jpg'
-                ]
+                imgs: {
+                    url: [
+                        'images/img1.jpg',
+                        'images/img2.jpg',
+                        'images/img3.jpg'
+                    ],
+                    destUrl: [],
+                    altText: []
+                }
             }, options),
-            imgCount = config.imgs.length,
-            slidebox = $('#img-switch a'),
 
+            imgCount = config.imgs.url.length,
+            switchBoxContainer = $(this),
+
+            // util functions
             util = {
-                addEventWatcher: function ( elem, event, callback ) {}
+                clearTimeout: clearTimeout,
+                clearInterval: clearInterval
             };
 
         if ( imgCount === 0 ) {
@@ -40,40 +44,61 @@
             return null;
         }
 
-        function createImageElement () {
-            var imgElem = [],
+        // create img elements and add them to DOM
+        function createImageBox () {
+            var imgItems = [],
+                imgBox = '',
                 i;
 
             for ( i = 0; i < imgCount; i++ ) {
-                imgElem[i] = $('<img src="" alt="" />');
-                imgElem[i].attr('src', config.imgs[i]);
-                imgElem[i].attr('index', i);
-                slidebox.eq(i).append(imgElem[i]);
+                imgItems[i] = '<li>\
+                                   <a href="' + (config.imgs.destUrl[i] || '') + '">\
+                                       <img src="' + (config.imgs.url[i] || '') + '" alt="' + (config.imgs.altText[i] || '') + '" />\
+                                   </a>\
+                               </li>';
             }
+
+            imgBox = '<ul>' + imgItems.join('') + '</ul>';
+            switchBoxContainer.append(imgBox);
+
+            // add switch class to the first li elment
+            switchBoxContainer.find('li').eq(0).addClass(config.method);
         }
 
         function switchImage ( elem ) {
-            elem.removeClass('active').next().addClass('active');
+            var timer = null,
+                elem = switchBoxContainer.find('li.' + config.method);
+
+            elem.removeClass(config.method).next().addClass(config.method);
+
+            if ( elem.next() === '[]' || !config.isLoop ) {
+                clearTimeout(timer);
+            }
+
+            console.log(elem.next());
+
+            timer = setTimeout(switchImage, config.speed);
         }
 
         function switchImageWithFadeEffect () {
-            var activedElem = $('#img-switch li.active'),
-                imgsLis = $('#img-switch li'),
-                timer = null,
+            var activedElem = switchBoxContainer.find('li.' + config.method),
+                imgsLis = switchBoxContainer.find('li'),
                 i = 0;
 
             switchImage(activedElem);
-            //timer = setTimeout(switchImageWithFadeEffect, config.speed);
         }
 
         function switchImageWithSlideEffect () {}
 
         function switchImageWithPileEffect () {}
 
-        function getSwitchMethod () {
+        /**
+         * execute function according to user's config
+         * @function getSwitchMethod
+         */
+        function startSwitchBox () {
             switch (config.method) {
                 case 'fade':
-                    console.log('fade');
                     switchImageWithFadeEffect();
                     break;
 
@@ -90,8 +115,8 @@
             }
         }
 
-        createImageElement();
-        setTimeout(getSwitchMethod, config.speed);
+        createImageBox();
+        setTimeout(startSwitchBox, config.speed);
     }
 
 })( jQuery );

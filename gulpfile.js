@@ -14,7 +14,7 @@ var gulp = require('gulp'),
     livereload = require('gulp-livereload'),
     rimraf = require('rimraf'),
     runSequence = require('run-sequence'),
-    openURL = require('open'),
+    openURL = require('gulp-open'),
     jshint = require('gulp-jshint'),
     connect = require('gulp-connect'),
 
@@ -88,7 +88,13 @@ gulp.task('start:server', function () {
 });*/
 
 gulp.task('start:client', ['start:server', 'compass'], function () {
-    openURL('http://0.0.0.0:9007');
+    var options = {
+        uri: 'http://0.0.0.0:9007',
+        app: 'Google Chrome'
+    };
+
+    gulp.src(paths.views.main)
+        .pipe(openURL(options));
 });
 
 gulp.task('watch', function () {

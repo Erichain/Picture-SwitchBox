@@ -3,6 +3,6 @@
  */
 (function ( $ ) {
 
-    $('.img-switch').imgSwitch();
+    $('.img-container').switchBox();
 
 })( jQuery );

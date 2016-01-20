@@ -1,8 +1,9 @@
 .img-container {
-    width: 900px;
-    margin: 0 auto;
+
 
     ul {
+        width: 900px;
+        margin: 0 auto;
         position: relative;
         height: 400px;
         list-style: none;
@@ -19,7 +20,7 @@
             -o-transition: all 1s ease-in-out;
             transition: all 1s ease-in-out;
 
-            &.active {
+            &.fade {
                 opacity: 1;
             }
         }
