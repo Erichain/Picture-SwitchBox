@@ -3,6 +3,8 @@
  */
 (function ( $ ) {
 
-    $('.img-container').switchBox();
+    $('.img-container').switchBox({
+        method: 'scale'
+    });
 
 })( jQuery );
