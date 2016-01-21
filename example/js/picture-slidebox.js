@@ -69,18 +69,18 @@
             var timer = null,
                 elem = switchBoxContainer.find('li.' + config.method);
 
-            elem.removeClass(config.method).next().addClass(config.method);
+            elem.removeClass(config.method).next('li').addClass(config.method);
 
-            if ( elem.next() === '[]' || !config.isLoop ) {
+            if ( !config.isLoop ) {
                 clearTimeout(timer);
             }
 
-            console.log(elem.next());
+            console.log(elem.next('li'));
 
-            timer = setTimeout(switchImage, config.speed);
+            //timer = setTimeout(switchImage, config.speed);
         }
 
-        function switchImageWithFadeEffect () {
+        function switchImageWithEffect () {
             var activedElem = switchBoxContainer.find('li.' + config.method),
                 imgsLis = switchBoxContainer.find('li'),
                 i = 0;
@@ -88,35 +88,8 @@
             switchImage(activedElem);
         }
 
-        function switchImageWithSlideEffect () {}
-
-        function switchImageWithPileEffect () {}
-
-        /**
-         * execute function according to user's config
-         * @function getSwitchMethod
-         */
-        function startSwitchBox () {
-            switch (config.method) {
-                case 'fade':
-                    switchImageWithFadeEffect();
-                    break;
-
-                case 'slide':
-                    switchImageWithSlideEffect();
-                    break;
-
-                case 'pile':
-                    switchImageWithPileEffect();
-                    break;
-
-                default:
-                    switchImageWithFadeEffect();
-            }
-        }
-
         createImageBox();
-        setTimeout(startSwitchBox, config.speed);
+        setTimeout(switchImageWithEffect, config.speed);
     }
 
 })( jQuery );
