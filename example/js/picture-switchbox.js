@@ -24,7 +24,7 @@
          * @config imgs          {Object}
          * @config imgs.urls     {Array}     your imgs
          * @config imgs.destUrl  {Array}     where to go when clicking on the image
-         * @config altText       {Array}     the alt info of your imgs
+         * @config imgs.altText  {Array}     the alt info of your imgs
          */
         var config = $.extend({
                 speed: 3000,
