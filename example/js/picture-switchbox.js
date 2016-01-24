@@ -46,12 +46,6 @@
 
             // util functions
             utils = {
-                isMouseOn: function ( elem ) {
-                    elem.on('mouseover', function ( event ) {
-                        return true;
-                    });
-                },
-
                 preventAllAnchorsDefault: function ( elems ) {
                     elems.each(function ( index ) {
                         $(this).on('click', function ( event ) {
