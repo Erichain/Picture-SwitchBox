@@ -13,7 +13,7 @@ In your user config file:
 ```
 $('your images container selector').switchBox({
     speed: 4000,
-    method: 'scale',
+    method: 'fade',
     isLoop: true,
     imgs: {
         url: [
@@ -28,12 +28,12 @@ $('your images container selector').switchBox({
 ```
 
 ## Params
-`speed`       the speed which images switch with <br/>
-`method`       the way images switch in <br/>
-`isLoop`       let the switch box loop or not <br/>         
-`imgs.urls`    your imgs <br/>
-`imgs.destUrl` where to go when clicking on the image <br/>
-`imgs.altText` the alt info of your imgs <br/>
+`speed`       the speed which images switch with. Default: 4000ms <br/>
+`method`       the way images switch in. Default: fade <br/>
+`isLoop`       let the switch box loop or not. Default: true <br/>         
+`imgs.urls`    your imgs. Default: [] <br/>
+`imgs.destUrl` where to go when clicking on the image. Default: [] <br/>
+`imgs.altText` the alt info of your imgs. Default: [] <br/>
 
 ## License
 Release under the MIT license.
