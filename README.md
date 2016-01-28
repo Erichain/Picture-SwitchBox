@@ -7,6 +7,9 @@ Switch box written with jQuery ( jQuery version >= 1.8 )
 ## Preview
 `gulp serve` <br/>
 
+## Build
+`gulp build`
+
 ## Configuration
 In your user config file:
 

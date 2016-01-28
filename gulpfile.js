@@ -17,6 +17,8 @@ var gulp = require('gulp'),
     openURL = require('gulp-open'),
     jshint = require('gulp-jshint'),
     connect = require('gulp-connect'),
+    uglify = require('gulp-uglify'),
+    rename = require('gulp-rename'),
 
     /* define root app */
     rootApp = {
@@ -66,10 +68,6 @@ gulp.task('clean:tmp', function ( cb ) {
     rimraf(rootApp.app + '/example/.tmp', cb);
 });
 
-gulp.task('clean:css', function ( cb ) {
-    rimraf(rootApp.app + '/example/.tmp', cb)
-});
-
 gulp.task('start:server', function () {
     connect.server({
         root: [rootApp.app + '/example'],
@@ -79,13 +77,6 @@ gulp.task('start:server', function () {
         port: 9007
     });
 });
-
-/*gulp.task('build', function () {
-    gulp.src([paths.scripts, paths.styles])
-        .pipe(compass())
-        .pipe(cssnano())
-        .dest(rootApp.app + '/dist');
-});*/
 
 gulp.task('start:client', ['start:server', 'compass'], function () {
     var options = {
@@ -106,10 +97,52 @@ gulp.task('watch', function () {
 gulp.task('serve', function ( cb ) {
     runSequence(
         'clean:tmp',
-        'clean:css',
         ['lint:scripts'],
         ['start:client'],
         'watch', cb)
 });
+
+/////////////
+// build task
+////////////
+gulp.task('clean:dist', function ( cb ) {
+    rimraf(rootApp.app + '/dist', cb)
+});
+
+
+// compress js and css and rename them
+gulp.task('compress', function () {
+    gulp.src(rootApp.app + '/example/js/picture-switchbox.js')
+        .pipe(gulp.dest(rootApp.app + '/dist'))
+        .pipe(uglify())
+        .pipe(rename(function ( path ) {
+            path.extname = '.min.js'
+        }))
+        .pipe(gulp.dest(rootApp.app + '/dist'));
+
+    gulp.src(paths.styles)
+        .pipe(compass({
+            sass: rootApp.app + '/example/scss',
+            css: rootApp.app + '/dist',
+            image: 'images'
+        }))
+        .pipe(gulp.dest(rootApp.app + '/dist'))
+        .pipe(cssnano())
+        .pipe(rename(function ( path ) {
+            path.extname = '.min.css'
+        }))
+        .pipe(gulp.dest(rootApp.app + '/dist'))
+});
+
+gulp.task('build', function ( cb ) {
+    runSequence(
+        'clean:dist',
+        ['compress'],
+        cb
+    )
+});
+/////////////////
+// end build task
+/////////////////
 
 gulp.task('default', ['start:server', 'watch']);
