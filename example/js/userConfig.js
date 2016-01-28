@@ -4,7 +4,7 @@
 (function ( $ ) {
 
     $('.img-container').switchBox({
-        method: 'scale'
+        method: 'fade'
     });
 
 })( jQuery );

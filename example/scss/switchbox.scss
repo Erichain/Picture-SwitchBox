@@ -1,13 +1,16 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
 .img-container {
-
-
     ul {
-        width: 900px;
-        margin: 0 auto;
         position: relative;
-        height: 400px;
+        width: 100%;
+        height: 500px;
+        margin: 0;
         list-style: none;
-        overflow: hidden;
 
         li {
             position: absolute;
@@ -19,6 +22,12 @@
             -ms-transition: all 1s ease-in-out;
             -o-transition: all 1s ease-in-out;
             transition: all 1s ease-in-out;
+
+            a {
+                img {
+                    max-width: 100%;
+                }
+            }
 
             &.fade {
                 opacity: 1;
@@ -56,8 +65,8 @@
 @keyframes slide {
     0% {
         opacity: 0;
-        -webkit-transform: translateX(900px);
-        transform: translateX(900px);
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
     }
     100% {
         opacity: 1;

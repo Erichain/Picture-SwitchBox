@@ -46,6 +46,18 @@
 
             // util functions
             utils = {
+                mouseListener: function ( elems, timer, speed, callback ) {
+                    elems.each(function ( index ) {
+                        $(this)
+                            .on('mouseenter', function () {
+                                clearTimeout(timer);
+                            })
+                            .on('mouseleave', function () {
+                                setTimeout(callback, speed);
+                            });
+                    });
+                },
+
                 preventAllAnchorsDefault: function ( elems ) {
                     elems.each(function ( index ) {
                         $(this).on('click', function ( event ) {
@@ -61,10 +73,7 @@
             return null;
         }
 
-        /**
-         * create img elements and add them to DOM
-         * @function createImageBox
-         */
+        // create img elements and add them to DOM
         function createImageBox () {
             var imgItems = [],
                 imgBox = '',
@@ -88,34 +97,39 @@
             utils.preventAllAnchorsDefault(switchBoxContainer.find('a'));
         }
 
-        /**
-         * function used to switch images in specific speed
-         * @function switchImage
-         */
+        // switch images in specific speed
         function switchImage () {
             var timer = null,
                 elem = switchBoxContainer.find('li.' + config.method),
                 nextElemLen = elem.next('li').length;
 
-            // if user don't want let box looping, set it to false
-            if ( !config.isLoop && nextElemLen === 0 ) {
-                clearTimeout(timer);
-            }
-            else {
-                // if actived element's next is empty, then go to the first element
-                if ( nextElemLen === 0 ) {
-                    switchBoxContainer.find('li').eq(imgCount - 1).removeClass(config.method);
-                    switchBoxContainer.find('li').eq(0).addClass(config.method);
+            timer = setTimeout(function () {
+
+                // if user don't want let box looping, set it to false
+                if ( !config.isLoop && nextElemLen === 0 ) {
+                    clearTimeout(timer);
                 }
                 else {
-                    elem.removeClass(config.method).next('li').addClass(config.method);
-                }
-            }
 
-            timer = setTimeout(switchImage, config.speed);
+                    // if actived element's next is empty, then go to the first element
+                    if ( nextElemLen === 0 ) {
+                        switchBoxContainer.find('li').eq(imgCount - 1).removeClass(config.method);
+                        switchBoxContainer.find('li').eq(0).addClass(config.method);
+                    }
+                    else {
+                        elem.removeClass(config.method).next('li').addClass(config.method);
+                    }
+
+                    timer = setTimeout(switchImage, 0);
+                }
+
+            }, config.speed);
+
+            // add event listener for mouse event
+            utils.mouseListener(switchBoxContainer.find('a'), timer, 0, switchImage);
         }
 
         createImageBox();
-        setTimeout(switchImage, config.speed);
+        switchImage();
     }
 })( jQuery );
