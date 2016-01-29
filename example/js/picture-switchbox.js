@@ -46,6 +46,8 @@
 
             // util functions
             utils = {
+
+                // add mouse event listener to make image's aciton stop or not
                 mouseListener: function ( elems, timer, speed, callback ) {
                     elems.each(function ( index ) {
                         $(this)
@@ -58,11 +60,12 @@
                     });
                 },
 
+                // prevent elem's default action
                 preventAllAnchorsDefault: function ( elems ) {
                     elems.each(function ( index ) {
                         $(this).on('click', function ( event ) {
                             event.preventDefault();
-                        })
+                        });
                     });
                 }
             };
@@ -73,10 +76,14 @@
             return null;
         }
 
+        /*=========================  main feature functions  =====================================*/
+
         // create img elements and add them to DOM
         function createImageBox () {
             var imgItems = [],
+                selectorItem = [],
                 imgBox = '',
+                selectors = '',
                 i;
 
             for ( i = 0; i < imgCount; i++ ) {
@@ -85,40 +92,53 @@
                                        <img src="' + (config.imgs.url[i] || '') + '" alt="' + (config.imgs.altText[i] || '') + '" />\
                                    </a>\
                                </li>';
+
+                selectorItem[i] = ' <li></li>';
             }
 
-            imgBox = '<ul>' + imgItems.join('') + '</ul>';
-            switchBoxContainer.append(imgBox);
+            imgBox = '<ul class="imgs-content">' + imgItems.join('') + '</ul>';
+            selectors = '<ul class="selector-circle">' + selectorItem.join('') + '</ul>';
+
+            switchBoxContainer.append(imgBox, selectors);
 
             // add switch class to the first li element
-            switchBoxContainer.find('li').eq(0).addClass(config.method);
+            switchBoxContainer.find('.imgs-content li').eq(0).addClass(config.method);
+            switchBoxContainer.find('.selector-circle li').eq(0).addClass('active');
 
             // prevent a tags' default behavior
             utils.preventAllAnchorsDefault(switchBoxContainer.find('a'));
         }
 
+        // controller for images' switch and selectors' state change
+        function switchCtrl ( activeImgElem, activeSelectorElem, nextElemLen ) {
+            // if actived element's next is empty, then go to the first element
+            if ( nextElemLen === 0 ) {
+                switchBoxContainer.find('.imgs-content li').eq(imgCount - 1).removeClass(config.method);
+                switchBoxContainer.find('.imgs-content li').eq(0).addClass(config.method);
+                switchBoxContainer.find('.selector-circle li').eq(imgCount - 1).removeClass('active');
+                switchBoxContainer.find('.selector-circle li').eq(0).addClass('active');
+            }
+            else {
+                activeImgElem.removeClass(config.method).next('li').addClass(config.method);
+                activeSelectorElem.removeClass('active').next('li').addClass('active');
+            }
+        }
+
         // switch images in specific speed
         function switchImage () {
             var timer = null,
-                elem = switchBoxContainer.find('li.' + config.method),
-                nextElemLen = elem.next('li').length;
+                activeImgElem = switchBoxContainer.find('li.' + config.method),
+                activeSelectorElem = switchBoxContainer.find('li.active'),
+                nextElemLen = activeImgElem.next('li').length;
 
             timer = setTimeout(function () {
 
-                // if user don't want let box looping, set it to false
+                // if user don't want box to loop, set it to false
                 if ( !config.isLoop && nextElemLen === 0 ) {
                     clearTimeout(timer);
                 }
                 else {
-
-                    // if actived element's next is empty, then go to the first element
-                    if ( nextElemLen === 0 ) {
-                        switchBoxContainer.find('li').eq(imgCount - 1).removeClass(config.method);
-                        switchBoxContainer.find('li').eq(0).addClass(config.method);
-                    }
-                    else {
-                        elem.removeClass(config.method).next('li').addClass(config.method);
-                    }
+                    switchCtrl(activeImgElem, activeSelectorElem, nextElemLen);
 
                     timer = setTimeout(switchImage, 0);
                 }
@@ -132,4 +152,5 @@
         createImageBox();
         switchImage();
     }
+
 })( jQuery );

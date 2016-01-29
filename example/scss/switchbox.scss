@@ -5,8 +5,9 @@ body {
 }
 
 .img-container {
-    ul {
-        position: relative;
+    position: relative;
+
+    .imgs-content {
         width: 100%;
         height: 500px;
         margin: 0;
@@ -48,6 +49,36 @@ body {
                 -webkit-animation: scale 1s ease-in-out;
                 -o-animation: scale 1s ease-in-out;
                 animation: scale 1s ease-in-out;
+            }
+        }
+    }
+
+    .selector-circle {
+        position: absolute;
+        left: 50%;
+        bottom: 20px;
+        margin-left: -49px;
+        padding: 0;
+
+        li {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            margin-left: 15px;
+            border-radius: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            -webkit-transition: all 1s ease-in-out;
+            -moz-transition: all 1s ease-in-out;
+            -ms-transition: all 1s ease-in-out;
+            -o-transition: all 1s ease-in-out;
+            transition: all 1s ease-in-out;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &.active {
+                background-color: rgba(255, 255, 255, 1);
             }
         }
     }
