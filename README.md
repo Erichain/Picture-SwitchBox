@@ -13,7 +13,7 @@ Switch box written with jQuery ( jQuery version >= 1.8 )
 ## Configuration
 In your user config file:
 
-```
+```javascript
 $('your images container selector').switchBox({
     speed: 4000,
     method: 'fade',
