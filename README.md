@@ -2,10 +2,11 @@
 Switch box written with jQuery ( jQuery version >= 1.8 )
 
 ## Install
-`npm install` <br/>
+
 
 ## Preview
-`gulp serve` <br/>
+First run `npm install` <br/>
+then run `gulp serve` <br/>
 
 ## Build
 `gulp build`
