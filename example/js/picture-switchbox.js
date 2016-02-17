@@ -79,7 +79,7 @@
         /*=========================  main feature functions  =====================================*/
 
         // create img elements and add them to DOM
-        function createImageBox () {
+        function createImageBox() {
             var imgItems = [],
                 selectorItem = [],
                 imgBox = '',
@@ -110,7 +110,7 @@
         }
 
         // controller for images' switch and selectors' state change
-        function switchCtrl ( activeImgElem, activeSelectorElem, nextElemLen ) {
+        function switchCtrl( activeImgElem, activeSelectorElem, nextElemLen ) {
             // if actived element's next is empty, then go to the first element
             if ( nextElemLen === 0 ) {
                 switchBoxContainer.find('.imgs-content li').eq(imgCount - 1).removeClass(config.method);
@@ -125,7 +125,7 @@
         }
 
         // switch images in specific speed
-        function switchImage () {
+        function switchImage() {
             var timer = null,
                 activeImgElem = switchBoxContainer.find('li.' + config.method),
                 activeSelectorElem = switchBoxContainer.find('li.active'),
